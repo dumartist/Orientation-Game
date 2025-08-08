@@ -99,6 +99,24 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Save/Load Panel -->
+            <div class="status-box">
+                <div class="panel-header">> SAVE/LOAD</div>
+                <div class="status-content">
+                    <div class="save-controls">
+                        <input type="text" id="saveName" placeholder="Save name..." class="save-input">
+                        <button class="save-btn" onclick="saveGame()">Save Game</button>
+                    </div>
+                    <div class="load-controls">
+                        <button class="load-btn" onclick="showLoadMenu()">Load Game</button>
+                        <button class="list-btn" onclick="listSaves()">List Saves</button>
+                    </div>
+                    <div id="saveList" class="save-list" style="display: none;">
+                        <!-- Save files will be listed here -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

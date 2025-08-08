@@ -1,0 +1,26 @@
+{
+  "player": {
+    "name": "Player",
+    "level": 1,
+    "hp": 100,
+    "max_hp": 100,
+    "exp": 0,
+    "exp_to_next": 100,
+    "gold": 50,
+    "inventory": [],
+    "location": "start",
+    "quests": []
+  },
+  "game_log": [],
+  "available_actions": [
+    "story_choice_a",
+    "story_choice_b",
+    "story_choice_c",
+    "story_choice_d"
+  ],
+  "current_stage": 1,
+  "story_progress": [],
+  "save_id": "33220483-a160-4cb2-9cdc-bcdff161d760",
+  "save_name": "test",
+  "save_date": "2025-08-08T22:39:04.030586"
+}

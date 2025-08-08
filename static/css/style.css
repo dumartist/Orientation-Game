@@ -325,3 +325,145 @@ body {
     color: #00ffff;
     font-style: italic;
 }
+
+.log-entry.save {
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.log-entry.load {
+    color: #0088ff;
+    font-weight: bold;
+}
+
+/* Save/Load elements */
+.save-controls, .load-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.save-input {
+    background-color: #001100;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 8px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    flex: 1;
+    border-radius: 3px;
+}
+
+.save-input::placeholder {
+    color: #008800;
+}
+
+.save-btn, .load-btn, .list-btn {
+    background-color: #001100;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+.save-btn:hover, .load-btn:hover, .list-btn:hover {
+    background-color: #00ff00;
+    color: #000;
+}
+
+.save-btn:active, .load-btn:active, .list-btn:active {
+    transform: scale(0.98);
+}
+
+.save-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #001100;
+    border-radius: 3px;
+    background-color: #000;
+}
+
+.save-item {
+    padding: 8px;
+    border-bottom: 1px solid #001100;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.save-item:hover {
+    background-color: #001100;
+}
+
+.save-item:last-child {
+    border-bottom: none;
+}
+
+.save-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.save-item-name {
+    color: #ffff00;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.save-item-date {
+    color: #008800;
+    font-size: 11px;
+}
+
+.save-item-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+}
+
+.save-item-level {
+    color: #00ff00;
+}
+
+.save-item-stage {
+    color: #00ffff;
+}
+
+.save-item-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.save-item-btn {
+    background-color: #001100;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+}
+
+.save-item-btn:hover {
+    background-color: #00ff00;
+    color: #000;
+}
+
+.save-item-btn.delete {
+    border-color: #ff0000;
+    color: #ff0000;
+}
+
+.save-item-btn.delete:hover {
+    background-color: #ff0000;
+    color: #000;
+}

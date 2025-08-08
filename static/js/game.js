@@ -211,5 +211,144 @@ async function updateActions() {
             updateUI();
         }
 
+        // Save/Load functions
+        async function saveGame() {
+            const saveName = document.getElementById('saveName').value.trim() || 
+                           `Game Save ${new Date().toLocaleString()}`;
+            
+            const messageBox = document.getElementById('messageBox');
+            messageBox.innerHTML = '<div class="loading"></div> Saving...';
+
+            try {
+                const response = await fetch('/api/save-game', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ save_name: saveName })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    messageBox.textContent = result.message;
+                    document.getElementById('saveName').value = '';
+                    await loadGameState();
+                } else {
+                    messageBox.textContent = result.message || 'Failed to save game!';
+                }
+            } catch (error) {
+                console.error('Error saving game:', error);
+                messageBox.textContent = 'Error saving game!';
+            }
+        }
+
+        async function showLoadMenu() {
+            await listSaves();
+            const saveList = document.getElementById('saveList');
+            saveList.style.display = saveList.style.display === 'none' ? 'block' : 'none';
+        }
+
+        async function listSaves() {
+            try {
+                const response = await fetch('/api/list-saves');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displaySaveList(result.saves);
+                } else {
+                    console.error('Failed to list saves');
+                }
+            } catch (error) {
+                console.error('Error listing saves:', error);
+            }
+        }
+
+        function displaySaveList(saves) {
+            const saveList = document.getElementById('saveList');
+            
+            if (saves.length === 0) {
+                saveList.innerHTML = '<div class="save-item">No save files found</div>';
+                return;
+            }
+
+            const savesHTML = saves.map(save => {
+                const saveDate = new Date(save.save_date).toLocaleString();
+                return `
+                    <div class="save-item">
+                        <div class="save-item-header">
+                            <span class="save-item-name">${save.save_name}</span>
+                            <span class="save-item-date">${saveDate}</span>
+                        </div>
+                        <div class="save-item-details">
+                            <span class="save-item-level">Level ${save.player_level}</span>
+                            <span class="save-item-stage">Stage ${save.current_stage}</span>
+                        </div>
+                        <div class="save-item-actions">
+                            <button class="save-item-btn" onclick="loadSave('${save.save_id}')">Load</button>
+                            <button class="save-item-btn delete" onclick="deleteSave('${save.save_id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            saveList.innerHTML = savesHTML;
+        }
+
+        async function loadSave(saveId) {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.innerHTML = '<div class="loading"></div> Loading...';
+
+            try {
+                const response = await fetch('/api/load-game', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ save_id: saveId })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    messageBox.textContent = result.message;
+                    gameState = result.game_state;
+                    updateUI();
+                    document.getElementById('saveList').style.display = 'none';
+                } else {
+                    messageBox.textContent = result.message || 'Failed to load game!';
+                }
+            } catch (error) {
+                console.error('Error loading game:', error);
+                messageBox.textContent = 'Error loading game!';
+            }
+        }
+
+        async function deleteSave(saveId) {
+            if (!confirm('Are you sure you want to delete this save file?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/delete-save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ save_id: saveId })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    await listSaves(); // Refresh the save list
+                } else {
+                    console.error('Failed to delete save:', result.message);
+                }
+            } catch (error) {
+                console.error('Error deleting save:', error);
+            }
+        }
+
 // Auto-refresh game state every 5 seconds
 setInterval(loadGameState, 5000);

@@ -54,6 +54,9 @@ Dockerfile
 docker-compose.yml
 .dockerignore
 
+# Save files (should be persisted via volumes)
+saves/
+
 # Logs
 logs/
 *.log

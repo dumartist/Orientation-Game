@@ -3,6 +3,7 @@ import os
 import random
 import json
 from datetime import datetime
+import uuid
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -26,9 +27,107 @@ class GameState:
         self.available_actions = []
         self.current_stage = 1
         self.story_progress = []
+        self.save_id = None
+        self.save_name = None
+        self.save_date = None
+
+    def to_dict(self):
+        """Convert game state to dictionary for JSON serialization"""
+        return {
+            'player': self.player,
+            'game_log': self.game_log,
+            'available_actions': self.available_actions,
+            'current_stage': self.current_stage,
+            'story_progress': self.story_progress,
+            'save_id': self.save_id,
+            'save_name': self.save_name,
+            'save_date': self.save_date
+        }
+
+    def from_dict(self, data):
+        """Load game state from dictionary"""
+        self.player = data.get('player', self.player)
+        self.game_log = data.get('game_log', [])
+        self.available_actions = data.get('available_actions', [])
+        self.current_stage = data.get('current_stage', 1)
+        self.story_progress = data.get('story_progress', [])
+        self.save_id = data.get('save_id')
+        self.save_name = data.get('save_name')
+        self.save_date = data.get('save_date')
 
 # Initialize game state
 game_state = GameState()
+
+# Save file management
+SAVE_DIR = 'saves'
+if not os.path.exists(SAVE_DIR):
+    os.makedirs(SAVE_DIR)
+
+def get_save_file_path(save_id):
+    """Get the file path for a save file"""
+    return os.path.join(SAVE_DIR, f'{save_id}.json')
+
+def save_game_to_file(save_name):
+    """Save current game state to a JSON file"""
+    save_id = str(uuid.uuid4())
+    save_data = game_state.to_dict()
+    save_data['save_id'] = save_id
+    save_data['save_name'] = save_name
+    save_data['save_date'] = datetime.now().isoformat()
+    
+    file_path = get_save_file_path(save_id)
+    try:
+        with open(file_path, 'w') as f:
+            json.dump(save_data, f, indent=2)
+        return save_id
+    except Exception as e:
+        print(f"Error saving game: {e}")
+        return None
+
+def load_game_from_file(save_id):
+    """Load game state from a JSON file"""
+    file_path = get_save_file_path(save_id)
+    try:
+        with open(file_path, 'r') as f:
+            save_data = json.load(f)
+        game_state.from_dict(save_data)
+        return True
+    except Exception as e:
+        print(f"Error loading game: {e}")
+        return False
+
+def get_all_saves():
+    """Get list of all available save files"""
+    saves = []
+    if os.path.exists(SAVE_DIR):
+        for filename in os.listdir(SAVE_DIR):
+            if filename.endswith('.json'):
+                save_id = filename[:-5]  # Remove .json extension
+                file_path = get_save_file_path(save_id)
+                try:
+                    with open(file_path, 'r') as f:
+                        save_data = json.load(f)
+                    saves.append({
+                        'save_id': save_id,
+                        'save_name': save_data.get('save_name', 'Unknown'),
+                        'save_date': save_data.get('save_date', ''),
+                        'player_level': save_data.get('player', {}).get('level', 1),
+                        'current_stage': save_data.get('current_stage', 1)
+                    })
+                except Exception as e:
+                    print(f"Error reading save file {filename}: {e}")
+    return saves
+
+def delete_save_file(save_id):
+    """Delete a save file"""
+    file_path = get_save_file_path(save_id)
+    try:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            return True
+    except Exception as e:
+        print(f"Error deleting save file: {e}")
+    return False
 
 @app.route('/')
 def index():
@@ -469,6 +568,97 @@ def update_actions():
         game_state.available_actions = ['story_choice_a', 'story_choice_b', 'story_choice_c', 'story_choice_d']
     
     return jsonify({'available_actions': game_state.available_actions})
+
+@app.route('/api/save-game', methods=['POST'])
+def save_game():
+    """Save current game state"""
+    data = request.get_json()
+    save_name = data.get('save_name', f'Game Save {datetime.now().strftime("%Y-%m-%d %H:%M")}')
+    
+    save_id = save_game_to_file(save_name)
+    if save_id:
+        game_state.save_id = save_id
+        game_state.save_name = save_name
+        game_state.save_date = datetime.now().isoformat()
+        
+        game_state.game_log.append({
+            'timestamp': datetime.now().strftime('%H:%M:%S'),
+            'message': f'Game saved as "{save_name}"',
+            'type': 'save'
+        })
+        
+        return jsonify({
+            'success': True,
+            'message': f'Game saved successfully as "{save_name}"',
+            'save_id': save_id
+        })
+    else:
+        return jsonify({
+            'success': False,
+            'message': 'Failed to save game'
+        })
+
+@app.route('/api/load-game', methods=['POST'])
+def load_game():
+    """Load a saved game"""
+    data = request.get_json()
+    save_id = data.get('save_id')
+    
+    if not save_id:
+        return jsonify({
+            'success': False,
+            'message': 'No save ID provided'
+        })
+    
+    if load_game_from_file(save_id):
+        game_state.game_log.append({
+            'timestamp': datetime.now().strftime('%H:%M:%S'),
+            'message': f'Game loaded: {game_state.save_name}',
+            'type': 'load'
+        })
+        
+        return jsonify({
+            'success': True,
+            'message': f'Game loaded successfully: {game_state.save_name}',
+            'game_state': game_state.to_dict()
+        })
+    else:
+        return jsonify({
+            'success': False,
+            'message': 'Failed to load game'
+        })
+
+@app.route('/api/list-saves')
+def list_saves():
+    """Get list of all available save files"""
+    saves = get_all_saves()
+    return jsonify({
+        'success': True,
+        'saves': saves
+    })
+
+@app.route('/api/delete-save', methods=['POST'])
+def delete_save():
+    """Delete a save file"""
+    data = request.get_json()
+    save_id = data.get('save_id')
+    
+    if not save_id:
+        return jsonify({
+            'success': False,
+            'message': 'No save ID provided'
+        })
+    
+    if delete_save_file(save_id):
+        return jsonify({
+            'success': True,
+            'message': 'Save file deleted successfully'
+        })
+    else:
+        return jsonify({
+            'success': False,
+            'message': 'Failed to delete save file'
+        })
 
 if __name__ == '__main__':
     # Get port from environment variable or default to 5000
