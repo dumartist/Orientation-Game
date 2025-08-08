@@ -85,17 +85,18 @@
                 </div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Story Panel -->
             <div class="status-box">
-                <div class="panel-header">> ACTIONS</div>
-                <div class="action-grid" id="actionGrid">
-                    <button class="action-btn" onclick="performAction('explore', 'forest')">Explore Forest</button>
-                    <button class="action-btn" onclick="performAction('explore', 'cave')">Explore Cave</button>
-                    <button class="action-btn" onclick="performAction('explore', 'dungeon')">Explore Dungeon</button>
-                    <button class="action-btn" onclick="performAction('rest')">Rest (10g)</button>
-                    <button class="action-btn" onclick="performAction('shop')">Visit Shop</button>
-                    <button class="action-btn" onclick="performAction('quest', 'goblin_hunt')">Accept Goblin Hunt</button>
-                    <button class="action-btn" onclick="performAction('quest', 'treasure_hunt')">Accept Treasure Hunt</button>
+                <div class="panel-header">> STORY CHOICES</div>
+                <div class="status-content">
+                    <div id="storyTitle" class="story-title">The Awakening</div>
+                    <div id="storyDescription" class="story-description">You wake up in a mysterious cave. What do you do?</div>
+                    <div class="story-choices" id="storyChoices">
+                        <button class="story-btn" onclick="performAction('story_choice', 'a')">A) Explore the cave carefully</button>
+                        <button class="story-btn" onclick="performAction('story_choice', 'b')">B) Rush out of the cave</button>
+                        <button class="story-btn" onclick="performAction('story_choice', 'c')">C) Search for supplies</button>
+                        <button class="story-btn" onclick="performAction('story_choice', 'd')">D) Meditate and rest</button>
+                    </div>
                 </div>
             </div>
         </div>

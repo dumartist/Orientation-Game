@@ -19,11 +19,13 @@ class GameState:
             'exp_to_next': 100,
             'gold': 50,
             'inventory': [],
-            'location': 'town',
+            'location': 'start',
             'quests': []
         }
         self.game_log = []
         self.available_actions = []
+        self.current_stage = 1
+        self.story_progress = []
 
 # Initialize game state
 game_state = GameState()
@@ -38,8 +40,10 @@ def get_game_state():
     """Get current game state"""
     return jsonify({
         'player': game_state.player,
-        'game_log': game_state.game_log[-10:],  # Last 10 entries
-        'available_actions': game_state.available_actions
+        'game_log': game_state.game_log[-20:],  # Last 20 entries
+        'available_actions': game_state.available_actions,
+        'current_stage': game_state.current_stage,
+        'story_progress': game_state.story_progress
     })
 
 @app.route('/api/action', methods=['POST'])
@@ -51,7 +55,9 @@ def perform_action():
     
     response = {'success': False, 'message': '', 'log_entry': ''}
     
-    if action == 'explore':
+    if action == 'story_choice':
+        response = make_story_choice(target)
+    elif action == 'explore':
         response = explore_area(target)
     elif action == 'fight':
         response = fight_enemy(target)
@@ -70,6 +76,199 @@ def perform_action():
         })
     
     return jsonify(response)
+
+def make_story_choice(choice):
+    """Handle story choices and branching narratives"""
+    story_stages = {
+        1: {
+            'title': 'The Awakening',
+            'description': 'You wake up in a mysterious cave. What do you do?',
+            'choices': {
+                'a': {
+                    'text': 'Explore the cave carefully',
+                    'outcome': 'You find ancient markings and gain 20 EXP',
+                    'exp_gain': 20,
+                    'gold_gain': 10,
+                    'next_stage': 2
+                },
+                'b': {
+                    'text': 'Rush out of the cave',
+                    'outcome': 'You escape quickly but trip and lose 10 HP',
+                    'hp_loss': 10,
+                    'exp_gain': 5,
+                    'next_stage': 2
+                },
+                'c': {
+                    'text': 'Search for supplies',
+                    'outcome': 'You find a health potion and some gold',
+                    'item_gain': 'Health Potion',
+                    'gold_gain': 25,
+                    'exp_gain': 15,
+                    'next_stage': 2
+                },
+                'd': {
+                    'text': 'Meditate and rest',
+                    'outcome': 'You feel refreshed and gain wisdom',
+                    'hp_gain': 20,
+                    'exp_gain': 10,
+                    'next_stage': 2
+                }
+            }
+        },
+        2: {
+            'title': 'The Crossroads',
+            'description': 'You emerge from the cave to find three paths. Which do you take?',
+            'choices': {
+                'a': {
+                    'text': 'Take the forest path',
+                    'outcome': 'You enter a dark forest filled with mystery',
+                    'exp_gain': 25,
+                    'location_change': 'forest',
+                    'next_stage': 3
+                },
+                'b': {
+                    'text': 'Follow the river',
+                    'outcome': 'You discover a peaceful village by the water',
+                    'exp_gain': 20,
+                    'gold_gain': 30,
+                    'location_change': 'village',
+                    'next_stage': 3
+                },
+                'c': {
+                    'text': 'Climb the mountain',
+                    'outcome': 'You find a dragon\'s lair and must fight!',
+                    'exp_gain': 50,
+                    'enemy_encounter': 'dragon',
+                    'next_stage': 3
+                },
+                'd': {
+                    'text': 'Return to the cave',
+                    'outcome': 'You find a hidden passage you missed before',
+                    'exp_gain': 15,
+                    'item_gain': 'Ancient Key',
+                    'next_stage': 3
+                }
+            }
+        },
+        3: {
+            'title': 'The Challenge',
+            'description': 'Your journey continues. What challenge do you face?',
+            'choices': {
+                'a': {
+                    'text': 'Solve the ancient puzzle',
+                    'outcome': 'Your intelligence helps you unlock a treasure',
+                    'exp_gain': 40,
+                    'gold_gain': 100,
+                    'item_gain': 'Magic Scroll',
+                    'next_stage': 4
+                },
+                'b': {
+                    'text': 'Fight the guardian',
+                    'outcome': 'A fierce battle awaits you',
+                    'exp_gain': 60,
+                    'enemy_encounter': 'guardian',
+                    'next_stage': 4
+                },
+                'c': {
+                    'text': 'Negotiate peacefully',
+                    'outcome': 'Your diplomacy skills pay off',
+                    'exp_gain': 30,
+                    'gold_gain': 50,
+                    'alliance_gain': 'guardian',
+                    'next_stage': 4
+                },
+                'd': {
+                    'text': 'Use stealth',
+                    'outcome': 'You sneak past unnoticed',
+                    'exp_gain': 25,
+                    'stealth_bonus': True,
+                    'next_stage': 4
+                }
+            }
+        },
+        4: {
+            'title': 'The Final Choice',
+            'description': 'You reach the heart of the adventure. What is your destiny?',
+            'choices': {
+                'a': {
+                    'text': 'Become a legendary hero',
+                    'outcome': 'You choose the path of greatness',
+                    'exp_gain': 100,
+                    'title_gain': 'Legendary Hero',
+                    'ending': 'hero'
+                },
+                'b': {
+                    'text': 'Seek ultimate power',
+                    'outcome': 'Power comes with a price...',
+                    'exp_gain': 150,
+                    'dark_power': True,
+                    'ending': 'dark_lord'
+                },
+                'c': {
+                    'text': 'Find inner peace',
+                    'outcome': 'You discover true wisdom',
+                    'exp_gain': 80,
+                    'wisdom_gain': True,
+                    'ending': 'sage'
+                },
+                'd': {
+                    'text': 'Return home changed',
+                    'outcome': 'You bring knowledge back to your people',
+                    'exp_gain': 60,
+                    'knowledge_gain': True,
+                    'ending': 'teacher'
+                }
+            }
+        }
+    }
+    
+    if game_state.current_stage not in story_stages:
+        return {'success': False, 'message': 'Story complete!', 'log_entry': ''}
+    
+    stage_data = story_stages[game_state.current_stage]
+    if choice not in stage_data['choices']:
+        return {'success': False, 'message': 'Invalid choice!', 'log_entry': ''}
+    
+    choice_data = stage_data['choices'][choice]
+    
+    # Apply choice effects
+    if 'exp_gain' in choice_data:
+        game_state.player['exp'] += choice_data['exp_gain']
+    if 'gold_gain' in choice_data:
+        game_state.player['gold'] += choice_data['gold_gain']
+    if 'hp_loss' in choice_data:
+        game_state.player['hp'] = max(1, game_state.player['hp'] - choice_data['hp_loss'])
+    if 'hp_gain' in choice_data:
+        game_state.player['hp'] = min(game_state.player['max_hp'], game_state.player['hp'] + choice_data['hp_gain'])
+    if 'item_gain' in choice_data:
+        game_state.player['inventory'].append(choice_data['item_gain'])
+    if 'location_change' in choice_data:
+        game_state.player['location'] = choice_data['location_change']
+    
+    # Check for level up
+    if game_state.player['exp'] >= game_state.player['exp_to_next']:
+        level_up()
+    
+    # Record story progress
+    game_state.story_progress.append({
+        'stage': game_state.current_stage,
+        'choice': choice,
+        'outcome': choice_data['outcome']
+    })
+    
+    # Move to next stage or end
+    if 'next_stage' in choice_data:
+        game_state.current_stage = choice_data['next_stage']
+    elif 'ending' in choice_data:
+        game_state.current_stage = 'complete'
+    
+    return {
+        'success': True,
+        'message': choice_data['outcome'],
+        'log_entry': f'[STORY] {choice_data["outcome"]}',
+        'next_stage': game_state.current_stage if game_state.current_stage != 'complete' else None,
+        'ending': choice_data.get('ending', None)
+    }
 
 def explore_area(area):
     """Explore different areas"""
@@ -263,11 +462,11 @@ def level_up():
 
 @app.route('/api/update-actions')
 def update_actions():
-    """Update available actions based on current location"""
-    if game_state.player['location'] == 'town':
-        game_state.available_actions = ['explore_forest', 'explore_cave', 'explore_dungeon', 'rest', 'shop', 'quest_goblin_hunt', 'quest_treasure_hunt']
+    """Update available actions based on current stage"""
+    if game_state.current_stage == 'complete':
+        game_state.available_actions = ['restart_game']
     else:
-        game_state.available_actions = ['return_to_town']
+        game_state.available_actions = ['story_choice_a', 'story_choice_b', 'story_choice_c', 'story_choice_d']
     
     return jsonify({'available_actions': game_state.available_actions})
 

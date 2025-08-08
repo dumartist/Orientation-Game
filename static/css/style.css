@@ -274,3 +274,54 @@ body {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* Story elements */
+.story-title {
+    color: #ffff00;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.story-description {
+    color: #00ff00;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.story-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.story-btn {
+    background-color: #001100;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    text-align: left;
+    transition: all 0.2s ease;
+    border-radius: 3px;
+}
+
+.story-btn:hover {
+    background-color: #00ff00;
+    color: #000;
+    transform: translateX(5px);
+}
+
+.story-btn:active {
+    transform: scale(0.98);
+}
+
+.log-entry.story {
+    color: #00ffff;
+    font-style: italic;
+}
