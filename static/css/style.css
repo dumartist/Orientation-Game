@@ -1,0 +1,276 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0a0a0a;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.terminal-container {
+    display: flex;
+    height: 100vh;
+    padding: 10px;
+    gap: 10px;
+}
+
+.game-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #000;
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+}
+
+.panel-header {
+    background-color: #001100;
+    padding: 5px 10px;
+    border-bottom: 1px solid #00ff00;
+    font-weight: bold;
+}
+
+.game-log {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #000;
+}
+
+.log-entry {
+    margin-bottom: 5px;
+    padding: 2px 0;
+}
+
+.log-entry.timestamp {
+    color: #008800;
+    font-size: 12px;
+}
+
+.log-entry.action {
+    color: #00ff00;
+}
+
+.log-entry.level_up {
+    color: #ffff00;
+    font-weight: bold;
+    animation: blink 1s infinite;
+}
+
+.log-entry.combat {
+    color: #ff0000;
+}
+
+.log-entry.explore {
+    color: #00ffff;
+}
+
+.log-entry.quest {
+    color: #ff00ff;
+}
+
+.log-entry.shop {
+    color: #ff8800;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.5; }
+}
+
+.status-panel {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.status-box {
+    background-color: #000;
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+}
+
+.status-content {
+    padding: 10px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #008800;
+}
+
+.stat-value {
+    color: #00ff00;
+    font-weight: bold;
+}
+
+.hp-bar {
+    width: 100%;
+    height: 15px;
+    background-color: #001100;
+    border: 1px solid #00ff00;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.hp-fill {
+    height: 100%;
+    background-color: #00ff00;
+    transition: width 0.3s ease;
+}
+
+.exp-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #001100;
+    border: 1px solid #008800;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.exp-fill {
+    height: 100%;
+    background-color: #008800;
+    transition: width 0.3s ease;
+}
+
+.action-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    padding: 10px;
+}
+
+.action-btn {
+    background-color: #001100;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    background-color: #00ff00;
+    color: #000;
+}
+
+.action-btn:active {
+    transform: scale(0.98);
+}
+
+.action-btn:disabled {
+    background-color: #001100;
+    border-color: #004400;
+    color: #004400;
+    cursor: not-allowed;
+}
+
+.message-box {
+    background-color: #000;
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.inventory-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.inventory-item {
+    padding: 2px 5px;
+    border-bottom: 1px solid #001100;
+}
+
+.quest-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.quest-item {
+    padding: 5px;
+    border-bottom: 1px solid #001100;
+    margin-bottom: 5px;
+}
+
+.quest-name {
+    color: #ffff00;
+    font-weight: bold;
+}
+
+.quest-description {
+    color: #00aa00;
+    font-size: 12px;
+}
+
+.quest-progress {
+    color: #008800;
+    font-size: 11px;
+}
+
+.cursor {
+    animation: blink 1s infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #001100;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00ff00;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00cc00;
+}
+
+/* Loading animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #001100;
+    border-radius: 50%;
+    border-top-color: #00ff00;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

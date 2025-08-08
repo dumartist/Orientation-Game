@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal RPG - Adventure Awaits</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="terminal-container">
+        <!-- Game Log Panel -->
+        <div class="game-panel">
+            <div class="panel-header">
+                > GAME LOG <span class="cursor">_</span>
+            </div>
+            <div class="game-log" id="gameLog">
+                <div class="log-entry">Welcome to Terminal RPG!</div>
+                <div class="log-entry">Type 'help' for available commands...</div>
+            </div>
+        </div>
+
+        <!-- Status Panel -->
+        <div class="status-panel">
+            <!-- Player Stats -->
+            <div class="status-box">
+                <div class="panel-header">> PLAYER STATS</div>
+                <div class="status-content">
+                    <div class="stat-row">
+                        <span class="stat-label">Name:</span>
+                        <span class="stat-value" id="playerName">Player</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Level:</span>
+                        <span class="stat-value" id="playerLevel">1</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">HP:</span>
+                        <span class="stat-value" id="playerHP">100/100</span>
+                    </div>
+                    <div class="hp-bar">
+                        <div class="hp-fill" id="hpBar" style="width: 100%"></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">EXP:</span>
+                        <span class="stat-value" id="playerEXP">0/100</span>
+                    </div>
+                    <div class="exp-bar">
+                        <div class="exp-fill" id="expBar" style="width: 0%"></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Gold:</span>
+                        <span class="stat-value" id="playerGold">50</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory -->
+            <div class="status-box">
+                <div class="panel-header">> INVENTORY</div>
+                <div class="status-content">
+                    <div class="inventory-list" id="inventoryList">
+                        <div class="inventory-item">Empty</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quests -->
+            <div class="status-box">
+                <div class="panel-header">> ACTIVE QUESTS</div>
+                <div class="status-content">
+                    <div class="quest-list" id="questList">
+                        <div class="quest-item">No active quests</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Panel -->
+        <div class="action-panel">
+            <!-- Message Box -->
+            <div class="status-box">
+                <div class="panel-header">> MESSAGE</div>
+                <div class="message-box" id="messageBox">
+                    Welcome to Terminal RPG! Choose your action below.
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="status-box">
+                <div class="panel-header">> ACTIONS</div>
+                <div class="action-grid" id="actionGrid">
+                    <button class="action-btn" onclick="performAction('explore', 'forest')">Explore Forest</button>
+                    <button class="action-btn" onclick="performAction('explore', 'cave')">Explore Cave</button>
+                    <button class="action-btn" onclick="performAction('explore', 'dungeon')">Explore Dungeon</button>
+                    <button class="action-btn" onclick="performAction('rest')">Rest (10g)</button>
+                    <button class="action-btn" onclick="performAction('shop')">Visit Shop</button>
+                    <button class="action-btn" onclick="performAction('quest', 'goblin_hunt')">Accept Goblin Hunt</button>
+                    <button class="action-btn" onclick="performAction('quest', 'treasure_hunt')">Accept Treasure Hunt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>
