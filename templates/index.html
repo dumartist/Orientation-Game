@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal RPG - Adventure Awaits</title>
+    <title>The Codebound Chronicles - Terminal RPG</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -14,8 +14,8 @@
                 > GAME LOG <span class="cursor">_</span>
             </div>
             <div class="game-log" id="gameLog">
-                <div class="log-entry">Welcome to Terminal RPG!</div>
-                <div class="log-entry">Type 'help' for available commands...</div>
+                <div class="log-entry">Welcome to The Codebound Chronicles!</div>
+                <div class="log-entry">You are an Anomaly in the year 2125...</div>
             </div>
         </div>
 
@@ -23,7 +23,10 @@
         <div class="status-panel">
             <!-- Player Stats -->
             <div class="status-box">
-                <div class="panel-header">> PLAYER STATS</div>
+                <div class="panel-header">
+                    <span>> PLAYER STATS</span>
+                    <a href="/logout" class="logout-btn">LOGOUT</a>
+                </div>
                 <div class="status-content">
                     <div class="stat-row">
                         <span class="stat-label">Name:</span>
@@ -48,8 +51,46 @@
                         <div class="exp-fill" id="expBar" style="width: 0%"></div>
                     </div>
                     <div class="stat-row">
-                        <span class="stat-label">Gold:</span>
-                        <span class="stat-value" id="playerGold">50</span>
+                        <span class="stat-label">Credits:</span>
+                        <span class="stat-value" id="playerCredits">50</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Panel -->
+            <div class="status-box">
+                <div class="panel-header">> SKILLS</div>
+                <div class="status-content">
+                    <div class="stat-row">
+                        <span class="stat-label">Decryption:</span>
+                        <span class="stat-value" id="playerDecryption">1</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Manipulation:</span>
+                        <span class="stat-value" id="playerManipulation">1</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Reconstruction:</span>
+                        <span class="stat-value" id="playerReconstruction">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reputation Panel -->
+            <div class="status-box">
+                <div class="panel-header">> REPUTATION</div>
+                <div class="status-content">
+                    <div class="stat-row">
+                        <span class="stat-label">Codekeepers:</span>
+                        <span class="stat-value" id="playerCodekeepers">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Resistance:</span>
+                        <span class="stat-value" id="playerResistance">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Neutral:</span>
+                        <span class="stat-value" id="playerNeutral">0</span>
                     </div>
                 </div>
             </div>
@@ -81,7 +122,7 @@
             <div class="status-box">
                 <div class="panel-header">> MESSAGE</div>
                 <div class="message-box" id="messageBox">
-                    Welcome to Terminal RPG! Choose your action below.
+                    Welcome to The Codebound Chronicles! You are an Anomaly in the year 2125.
                 </div>
             </div>
 
@@ -90,12 +131,12 @@
                 <div class="panel-header">> STORY CHOICES</div>
                 <div class="status-content">
                     <div id="storyTitle" class="story-title">The Awakening</div>
-                    <div id="storyDescription" class="story-description">You wake up in a mysterious cave. What do you do?</div>
+                    <div id="storyDescription" class="story-description">You wake up in a sterile white room. The air hums with digital energy. You are in Nexis, the hidden heart of the Source.</div>
                     <div class="story-choices" id="storyChoices">
-                        <button class="story-btn" onclick="performAction('story_choice', 'a')">A) Explore the cave carefully</button>
-                        <button class="story-btn" onclick="performAction('story_choice', 'b')">B) Rush out of the cave</button>
-                        <button class="story-btn" onclick="performAction('story_choice', 'c')">C) Search for supplies</button>
-                        <button class="story-btn" onclick="performAction('story_choice', 'd')">D) Meditate and rest</button>
+                        <button class="story-btn" onclick="performAction('story_choice', 'a')">A) Trust Lira and embrace your role</button>
+                        <button class="story-btn" onclick="performAction('story_choice', 'b')">B) Question everything about this place</button>
+                        <button class="story-btn" onclick="performAction('story_choice', 'c')">C) Focus on learning the three pillars</button>
+                        <button class="story-btn" onclick="performAction('story_choice', 'd')">D) Investigate the whispers of corruption</button>
                     </div>
                 </div>
             </div>
@@ -110,7 +151,9 @@
                     </div>
                     <div class="load-controls">
                         <button class="load-btn" onclick="showLoadMenu()">Load Game</button>
-                        <button class="list-btn" onclick="listSaves()">List Saves</button>
+                    </div>
+                    <div class="restart-controls">
+                        <button class="restart-btn" onclick="restartGame()">Restart Adventure</button>
                     </div>
                     <div id="saveList" class="save-list" style="display: none;">
                         <!-- Save files will be listed here -->

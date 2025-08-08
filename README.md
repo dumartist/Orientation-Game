@@ -1,14 +1,14 @@
-# Terminal RPG - Adventure Awaits
+# The Codebound Chronicles - Terminal RPG
 
-A retro-style terminal CLI RPG game built with Python Flask and modern web technologies. Experience the nostalgia of classic text-based RPGs with a beautiful terminal-inspired interface.
+A cyberpunk-themed terminal CLI RPG game built with Python Flask and modern web technologies. Experience a branching narrative set in the year 2125 where reality is just a program and you are an Anomaly with the power to see through the digital facade.
 
 ## Features
 
-- **Terminal CLI Theme**: Authentic retro terminal appearance with green text on black background
-- **RPG Gameplay**: Level up, gain experience, collect gold, and battle enemies
-- **Multiple Areas**: Explore Forest, Cave, and Dungeon with different enemies and loot
-- **Quest System**: Accept and complete quests for rewards
-- **Shop System**: Buy items and equipment
+- **Cyberpunk Terminal Theme**: Authentic retro terminal appearance with green text on black background
+- **Branching Story RPG**: Experience "The Codebound Chronicles" with multiple story paths and endings
+- **Skill System**: Master Decryption, Manipulation, and Reconstruction abilities
+- **Reputation System**: Build relationships with Codekeepers, Resistance, or remain Neutral
+- **Save/Load System**: Persistent game saves using JSON files
 - **Real-time Updates**: Live game state updates and action feedback
 - **Responsive Design**: Works on desktop and mobile devices
 
@@ -16,21 +16,32 @@ A retro-style terminal CLI RPG game built with Python Flask and modern web techn
 
 ### Player Stats
 - **Level**: Increases with experience, unlocks new abilities
-- **HP**: Health points, restored by resting (costs gold)
-- **EXP**: Experience points, gained from battles and exploration
-- **Gold**: Currency for buying items and resting
-- **Inventory**: Items collected during adventures
+- **HP**: Health points, represents your digital integrity
+- **EXP**: Experience points, gained from story choices and revelations
+- **Credits**: Digital currency for transactions in the Source
+- **Inventory**: Items and evidence collected during your journey
 
-### Areas to Explore
-- **Dark Forest**: Goblin, Wolf, Bandit enemies
-- **Ancient Cave**: Troll, Bat, Spider enemies  
-- **Abandoned Dungeon**: Skeleton, Zombie, Dark Knight enemies
+### Skills System
+- **Decryption**: Unlock secrets hidden within the Source
+- **Manipulation**: Rewrite the code of objects and environments
+- **Reconstruction**: Rebuild corrupted data and fragmented memories
 
-### Actions Available
-- **Explore**: Visit different areas for encounters and loot
-- **Rest**: Recover HP (costs 10 gold)
-- **Shop**: Buy items and equipment
-- **Quests**: Accept Goblin Hunt and Treasure Hunt quests
+### Reputation System
+- **Codekeepers**: Your standing with the ruling organization
+- **Resistance**: Your connection to those who question the system
+- **Neutral**: Your reputation among independent factions
+
+### Story Stages
+- **Stage 1**: The Awakening - Your arrival in Nexis
+- **Stage 2**: The Trials Begin - Digital challenges and alliances
+- **Stage 3**: The Revelation - Discovering the Grand Code
+- **Stage 4**: The Final Choice - Determining the future of reality
+
+### Multiple Endings
+- **The Collapse**: Restore freedom but face chaos
+- **The New Order**: Seize control as the new architect
+- **The Balance**: Find a middle path between order and chaos
+- **The Anomaly**: Reject all systems and become truly free
 
 ## Installation & Setup
 
@@ -100,30 +111,36 @@ docker-compose up -d --build
 
 ## How to Play
 
-1. **Start Exploring**: Click "Explore Forest" to begin your adventure
-2. **Battle Enemies**: When you encounter enemies, click the fight button
-3. **Collect Loot**: Find items and gold during exploration
-4. **Level Up**: Gain experience to increase your level and stats
-5. **Complete Quests**: Accept quests for additional rewards
-6. **Manage Resources**: Use gold wisely for resting and shopping
+1. **Registration/Login**: First, register with your username and NPM, then login to access the game
+2. **Begin Your Journey**: Start with "The Awakening" and choose your path
+3. **Make Story Choices**: Each decision affects your skills, reputation, and story progression
+4. **Build Your Character**: Develop your skills in Decryption, Manipulation, and Reconstruction
+5. **Choose Your Allegiance**: Build reputation with Codekeepers, Resistance, or remain Neutral
+6. **Discover the Truth**: Uncover the secrets of the Source and the Grand Code
+7. **Determine the Future**: Make the final choice that will shape reality itself
+8. **Save Your Progress**: Use the save/load system to continue your adventure later
 
 ## Game Controls
 
-- **Action Buttons**: Click to perform actions like exploring, fighting, or resting
+- **Story Choice Buttons**: Click to make story decisions that affect your journey
 - **Real-time Updates**: Game state updates automatically
-- **Game Log**: View your adventure history in the left panel
-- **Status Panel**: Monitor your stats, inventory, and active quests
+- **Game Log**: View your adventure history and story progression
+- **Status Panel**: Monitor your stats, skills, reputation, and inventory
+- **Save/Load System**: Save your progress and load previous games
+- **Restart Adventure**: Start a fresh journey at any time or after completing the story
 
 ## Technical Details
 
 - **Backend**: Python Flask web framework
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Styling**: External CSS file with terminal-inspired theme and animations
+- **Styling**: External CSS file with cyberpunk terminal-inspired theme and animations
 - **Scripts**: External JavaScript file with game logic and UI functionality
 - **Architecture**: RESTful API design with JSON responses
 - **State Management**: Server-side game state with client-side UI updates
+- **Story System**: Branching narrative with multiple paths and endings
+- **Save System**: JSON-based persistent save files with Docker volume support
 - **Code Organization**: Separated concerns with external CSS and JS files
-- **Containerization**: Docker support with production and development configurations
+- **Containerization**: Docker support with production configuration
 - **Deployment**: Docker Compose for easy deployment and scaling
 
 ## File Structure
@@ -150,11 +167,12 @@ Orientation-Game/
 ## Contributing
 
 Feel free to contribute to this project by:
-- Adding new areas to explore
-- Creating new enemy types
-- Implementing additional game mechanics
+- Adding new story branches and endings
+- Creating new skills and abilities
+- Implementing additional reputation mechanics
 - Improving the UI/UX
 - Adding sound effects and music integration
+- Expanding the cyberpunk world and lore
 
 ## License
 
@@ -162,4 +180,4 @@ This project is open source and available under the MIT License.
 
 ---
 
-**Ready to begin your adventure? Start the game and explore the mysterious world of Terminal RPG!**
+**Ready to begin your journey? Start the game and discover the truth behind The Codebound Chronicles!**

@@ -16,18 +16,23 @@ body {
 
 .terminal-container {
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     height: 100vh;
     padding: 10px;
     gap: 10px;
+    align-items: stretch;
+    overflow-x: auto;
 }
 
 .game-panel {
-    flex: 1;
+    flex: 2;
     display: flex;
     flex-direction: column;
     background-color: #000;
     border: 1px solid #00ff00;
     border-radius: 5px;
+    min-width: 0;
 }
 
 .panel-header {
@@ -35,6 +40,25 @@ body {
     padding: 5px 10px;
     border-bottom: 1px solid #00ff00;
     font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logout-btn {
+    color: #ff0000;
+    text-decoration: none;
+    font-size: 10px;
+    padding: 2px 6px;
+    border: 1px solid #ff0000;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #ff0000;
+    color: #000;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
 }
 
 .game-log {
@@ -86,10 +110,11 @@ body {
 }
 
 .status-panel {
-    width: 300px;
+    width: 250px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    flex-shrink: 0;
 }
 
 .status-box {
@@ -154,6 +179,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-width: 400px;
+    min-width: 300px;
+    background-color: #000;
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+    padding: 10px;
+    flex-shrink: 0;
 }
 
 .action-grid {
@@ -358,7 +390,7 @@ body {
     color: #008800;
 }
 
-.save-btn, .load-btn, .list-btn {
+.save-btn, .load-btn {
     background-color: #001100;
     border: 1px solid #00ff00;
     color: #00ff00;
@@ -371,21 +403,43 @@ body {
     white-space: nowrap;
 }
 
-.save-btn:hover, .load-btn:hover, .list-btn:hover {
+.save-btn:hover, .load-btn:hover, .restart-btn:hover {
     background-color: #00ff00;
     color: #000;
 }
 
-.save-btn:active, .load-btn:active, .list-btn:active {
+.save-btn:active, .load-btn:active, .restart-btn:active {
     transform: scale(0.98);
 }
 
+.restart-controls {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #001100;
+}
+
+.restart-btn {
+    background-color: #001100;
+    border: 1px solid #ff8800;
+    color: #ff8800;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    border-radius: 3px;
+    white-space: nowrap;
+    width: 100%;
+}
+
+/* Save list styles */
 .save-list {
     max-height: 200px;
     overflow-y: auto;
     border: 1px solid #001100;
     border-radius: 3px;
     background-color: #000;
+    margin-top: 10px;
 }
 
 .save-item {

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Codebound Chronicles - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .auth-panel {
+            background-color: #000;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 30px;
+            width: 400px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        
+        .auth-title {
+            color: #00ff00;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #00ff00;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            color: #00ff00;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #000;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-btn:hover {
+            background-color: #00ff00;
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+        }
+        
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .auth-link {
+            color: #00ff00;
+            text-decoration: none;
+            font-size: 12px;
+            margin: 0 10px;
+        }
+        
+        .auth-link:hover {
+            text-shadow: 0 0 5px #00ff00;
+        }
+        
+        .error-message {
+            color: #ff0000;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        
+        .success-message {
+            color: #00ff00;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-panel">
+            <h1 class="auth-title">THE CODEBOUND CHRONICLES</h1>
+            <h2 class="auth-title" style="font-size: 18px; margin-bottom: 20px;">LOGIN TO NEXIS</h2>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">NPM:</label>
+                    <input type="text" id="npm" class="form-input" placeholder="Enter your NPM" required>
+                </div>
+                
+                <button type="submit" class="auth-btn">ACCESS NEXIS</button>
+            </form>
+            
+            <div id="message" class="error-message"></div>
+            
+            <div class="auth-links">
+                <a href="/register" class="auth-link">REGISTER NEW USER</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const npm = document.getElementById('npm').value.trim();
+            const messageDiv = document.getElementById('message');
+            
+            if (!npm) {
+                messageDiv.textContent = 'Please enter your NPM';
+                messageDiv.className = 'error-message';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ npm: npm })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    messageDiv.textContent = result.message;
+                    messageDiv.className = 'success-message';
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1000);
+                } else {
+                    messageDiv.textContent = result.message;
+                    messageDiv.className = 'error-message';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Connection error. Please try again.';
+                messageDiv.className = 'error-message';
+            }
+        });
+    </script>
+</body>
+</html>
